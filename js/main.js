@@ -1,5 +1,5 @@
-const getRandomInteger = (min, max) => Math.round(min - 0.5 + Math.random() * (max - min + 1));
+const getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 getRandomInteger(0, 3);
 
-const getLengthComparison = (lineLength, maxLineLength) => lineLength <= maxLineLength;
-getLengthComparison(25, 140);
+const getLengthComparison = (line, maxLineLength) => line.length <= maxLineLength;
+getLengthComparison('Javascript is fun!', 140);
