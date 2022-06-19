@@ -42,23 +42,34 @@ const NAMES = [
 ];
 
 const SIMILAR_PHOTO_DESCRIPTION_COUNT = 25;
+const SIMILAR_COMMENTS_COUNT = 2;
+const idArray = Array.from({length:25}, (_, i)=> ++i);
+const idCommentsArray = Array.from({length:150}, (_, i)=> ++i);
 
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-const createComment = () => ({
-  id: getRandomInteger(1, 1000),
-  avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-  message: getRandomArrayElement(MESSAGES),
-  name: getRandomArrayElement(NAMES),
-});
+const createComment = () => {
+  const idComment = idCommentsArray.shift();
+  return {
+    id: idComment,
+    avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+    message: getRandomArrayElement(MESSAGES),
+    name: getRandomArrayElement(NAMES),
+  };
+};
 
-const createPhotoDescription = () => ({
-  id: getRandomInteger(1, 25),
-  url: `photos/${getRandomInteger(1, 25)}.jpg`,
-  description: getRandomArrayElement(DESCRIPTIONS),
-  likes: getRandomInteger(15, 200),
-  comments: Array.from({length:getRandomArrayElement(1, 2)}, createComment),
-});
+const generationComments = () => Array.from({length: SIMILAR_COMMENTS_COUNT}, createComment);
+
+const createPhotoDescription = () => {
+  const id = idArray.shift();
+  return {
+    id: id,
+    url: `img/photos/${id}.jpg`,
+    description: getRandomArrayElement(DESCRIPTIONS),
+    likes: getRandomInteger(0, 250),
+    comments: generationComments(),
+  };
+};
 
 const createPhotoDescriptions = () => Array.from({length: SIMILAR_PHOTO_DESCRIPTION_COUNT}, createPhotoDescription);
 
