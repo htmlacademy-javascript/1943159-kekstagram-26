@@ -13,4 +13,6 @@ const getRandomArrayElement = (elements) => elements[getRandomInteger(0, element
 
 const isEscapePressed = (evt) => evt.key === 'Escape';
 
-export {getRandomInteger, getRandomArrayElement,isEscapePressed};
+const checkUniqueness = (value) => new Set(value).size === value.length;
+
+export {getRandomInteger, getRandomArrayElement,isEscapePressed, checkUniqueness};
