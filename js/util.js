@@ -11,4 +11,6 @@ getLengthComparison('Javascript is fun!', 140);
 
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-export {getRandomInteger, getRandomArrayElement};
+const isEscapePressed = (evt) => evt.key === 'Escape';
+
+export {getRandomInteger, getRandomArrayElement,isEscapePressed};
