@@ -8,14 +8,14 @@ const publicationsArray = createPhotoDescriptions();
 
 const publicationsFragment = document.createDocumentFragment();
 
-publicationsArray.forEach((photo) => {
+publicationsArray.forEach(({url, likes, comments, description}) => {
   const publicationElement = pictureTemplate.cloneNode(true);
-  publicationElement.querySelector('.picture__img').src = photo.url;
-  publicationElement.querySelector('.picture__comments').textContent = photo.comments.length;
-  publicationElement.querySelector('.picture__likes').textContent = photo.likes;
+  publicationElement.querySelector('.picture__img').src = url;
+  publicationElement.querySelector('.picture__likes').textContent = likes;
+  publicationElement.querySelector('.picture__comments').textContent = comments.length;
   publicationsFragment.appendChild(publicationElement);
   publicationElement.addEventListener('click', () => {
-    createFullSizePicture(photo);
+    createFullSizePicture({url, likes, comments, description});
   });
 });
 
