@@ -46,4 +46,4 @@ const debounce = (callback, timeoutDelay) => {
   };
 };
 
-export {getRandomInteger, getRandomArrayElement, isEscapePressed, checkUniqueness, showAlert, debounce};
+export {getRandomInteger, getLengthComparison, getRandomArrayElement, isEscapePressed, checkUniqueness, showAlert, debounce};

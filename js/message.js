@@ -8,8 +8,6 @@ const errorMessageElement = errorMessageTemplate.cloneNode(true);
 const errorButton = errorMessageElement.querySelector('.error__button');
 const body = document.querySelector('body');
 
-
-// Открытие и закрытие сообщения об удачной отправке
 const onPopupSuccessClose = (evt) => {
   if (isEscapePressed(evt)) {
     evt.preventDefault();
@@ -17,7 +15,6 @@ const onPopupSuccessClose = (evt) => {
   }
 };
 
-//Проверка на нажатие на область
 const successModalAreaClick = (evt) => {
   if (evt.target.matches('.success')) {
     successModalClose();
@@ -38,8 +35,6 @@ function successModalClose () {
   document.removeEventListener('keydown', onPopupSuccessClose);
 }
 
-
-// Открытие и закрытие сообщения о неудачной отправке
 const onPopupErrorClose = (evt) => {
   if (isEscapePressed(evt)) {
     evt.preventDefault();
