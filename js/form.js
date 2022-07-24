@@ -12,9 +12,7 @@ const maxCommentLength = 140;
 const maxHashtagsLength = 5;
 const re = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
 
-//Функция проверки нажатия esc
 const onPopupEscKeydown = (evt) => {
-  //Проверка элементов на фокус
   if (uploadHashtag === document.activeElement || uploadComment === document.activeElement) {
     return evt;
   }
@@ -24,19 +22,16 @@ const onPopupEscKeydown = (evt) => {
   }
 };
 
-//Функция открытия окна
 function overlayOpen () {
   uploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onPopupEscKeydown);
 }
 
-//Функция закрытия окна
 function overlayClose () {
   uploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onPopupEscKeydown);
-  //Сброс полей формы
   uploadInput.value = '';
   uploadHashtag.value = '';
   uploadComment.value = '';
@@ -51,19 +46,14 @@ const pristine = new Pristine(uploadForm, {
   errorTextClass: 'img-upload__field-wrapper__error-text',
 });
 
-//Функция создает массив хэш-тегов
 const splitHashtags = (value) => value.toLowerCase().split(' ');
 
-// Проверка на количество хэш-тегов
 const checkHashtagsLength = (value) => splitHashtags(value).length <= maxHashtagsLength;
 
-// Проверка на правильность символов и их длину
 const validateHashtag = (value) => splitHashtags(value).every((item) => re.test(item)) || value[0] === '';
 
-//Проверка на уникальность
 const checkUniqueHashtags = (value) => checkUniqueness(splitHashtags(value));
 
-//Проверка длины комментария
 const validateUploadComment = (value) => getLengthComparison(value, maxCommentLength);
 
 pristine.addValidator(uploadHashtag, checkHashtagsLength, `Нельзя указать больше ${maxHashtagsLength} хэш-тегов`);
@@ -77,4 +67,3 @@ uploadForm.addEventListener('submit', (evt) => {
     uploadForm.submit();
   }
 });
-
