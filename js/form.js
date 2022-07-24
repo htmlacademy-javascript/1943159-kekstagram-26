@@ -1,4 +1,5 @@
 import {isEscapePressed, getLengthComparison, checkUniqueness} from './util.js';
+import {resetScale} from './image-editing.js';
 
 const uploadContainer = document.querySelector('.img-upload');
 const uploadForm = uploadContainer.querySelector('.img-upload__form');
@@ -37,8 +38,10 @@ function overlayClose () {
   uploadComment.value = '';
 }
 
+resetScale();
+
 uploadInput.addEventListener('change', overlayOpen);
-uploadCancelButton.addEventListener('click',overlayClose);
+uploadCancelButton.addEventListener('click', overlayClose);
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
