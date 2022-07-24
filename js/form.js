@@ -1,5 +1,7 @@
-import {isEscapePressed, getLengthComparison, checkUniqueness} from './util.js';
-import {resetScale} from './image-editing.js';
+import {getRandomInteger, getRandomArrayElement,isEscapePressed, checkUniqueness} from './util.js';
+import {resetScale, resetEffect} from './photo-editor.js';
+import {sendData} from './api.js';
+import {successModalOpen, errorModalOpen} from './upload-messages.js';
 
 const uploadContainer = document.querySelector('.img-upload');
 const uploadForm = uploadContainer.querySelector('.img-upload__form');
@@ -9,6 +11,7 @@ const body = document.querySelector('body');
 const uploadCancelButton = uploadContainer.querySelector('#upload-cancel');
 const uploadHashtag = uploadContainer.querySelector('.text__hashtags');
 const uploadComment = uploadContainer.querySelector('.text__description');
+const submitButton = uploadForm.querySelector('.img-upload__submit');
 const maxCommentLength = 140;
 const maxHashtagsLength = 5;
 const re = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
@@ -23,6 +26,12 @@ const onPopupEscKeydown = (evt) => {
   }
 };
 
+const resetUploadForm = () => {
+  uploadInput.value = '';
+  uploadHashtag.value = '';
+  uploadComment.value = '';
+};
+
 function overlayOpen () {
   uploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
@@ -33,9 +42,10 @@ function overlayClose () {
   uploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onPopupEscKeydown);
-  uploadInput.value = '';
-  uploadHashtag.value = '';
-  uploadComment.value = '';
+  uploadForm.reset();
+  resetUploadForm();
+  clearScaleValue();
+  resetEffect();
 }
 
 resetScale();
@@ -53,7 +63,7 @@ const splitHashtags = (value) => value.toLowerCase().split(' ');
 
 const checkHashtagsLength = (value) => splitHashtags(value).length <= maxHashtagsLength;
 
-const validateHashtag = (value) => splitHashtags(value).every((item) => re.test(item)) || value[0] === '';
+const validateHashtag = (value) => splitHashtags(value).every((item) => re.test(item)) || value === '';
 
 const checkUniqueHashtags = (value) => checkUniqueness(splitHashtags(value));
 
@@ -64,9 +74,38 @@ pristine.addValidator(uploadHashtag, validateHashtag, 'Хэш-тег начин�
 pristine.addValidator(uploadHashtag, checkUniqueHashtags, 'Хэш-теги не должны повторяться');
 pristine.addValidator(uploadComment, validateUploadComment, `Длина комментария не может составлять больше ${maxCommentLength} символов!`);
 
-uploadForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  if (pristine.validate()) {
-    uploadForm.submit();
-  }
-});
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Отправляю...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+const setUserFormSubmit = (onSuccess) => {
+  uploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          onSuccess();
+          unblockSubmitButton();
+          successModalOpen();
+        },
+        () => {
+          showAlert('Не удалось отправить форму. Попробуйте ещё раз');
+          unblockSubmitButton();
+          errorModalOpen();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
+
+export {setUserFormSubmit, overlayClose};
