@@ -6,6 +6,7 @@ import './form.js';
 import './image-editing.js';
 import './upload-messages.js';
 import './filters.js';
+import './image-upload.js';
 import {createPublicationsArray} from './rendering.js';
 import {setUserFormSubmit} from './form.js';
 import {overlayClose} from './form.js';
@@ -18,8 +19,8 @@ const RERENDER_DELAY = 500;
 getData(createPublicationsArray);
 
 getData((publicationElements) => {
-    createPublicationsArray(publicationElements);
-    setFilters(publicationElements, debounce(createPublicationsArray, RERENDER_DELAY));
-  });
+  createPublicationsArray(publicationElements);
+  setFilters(publicationElements, debounce(createPublicationsArray, RERENDER_DELAY));
+});
 
 setUserFormSubmit(overlayClose);

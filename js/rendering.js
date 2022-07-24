@@ -6,8 +6,8 @@ const publicationsFragment = document.createDocumentFragment();
 const imageFilterContainer = document.querySelector('.img-filters');
 
 const createPublicationsArray = (publicationElements) => {
-  thumbnails.forEach(({url, likes, comments, description}) => {
-    const publicationElement = thumbnailTemplate.cloneNode(true);
+  publicationElements.forEach(({url, likes, comments, description}) => {
+    const publicationElement = pictureTemplate.cloneNode(true);
     publicationElement.querySelector('.picture__img').src = url;
     publicationElement.querySelector('.picture__likes').textContent = likes;
     publicationElement.querySelector('.picture__comments').textContent = comments.length;

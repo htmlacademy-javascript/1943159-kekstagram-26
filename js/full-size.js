@@ -11,7 +11,7 @@ const socialCommentElement = bigPictureElement.querySelector('.social__comment')
 const bigPictureDescriptionElement = bigPictureElement.querySelector('.social__caption');
 const bigPictureCloseElement = bigPictureElement.querySelector('#picture-cancel');
 const commentsFragment = document.createDocumentFragment();
-const maxCommentsValue = 5;
+const MAX_COMMENTS_VALUE = 5;
 
 const onPopupEscKeydown = (evt) => {
   if (isEscapePressed(evt)) {
@@ -20,7 +20,6 @@ const onPopupEscKeydown = (evt) => {
   }
 };
 
-//Функция открытия окна
 function bigPictureOpen () {
   bigPictureElement.classList.remove('hidden');
   body.classList.add('modal-open');
@@ -28,7 +27,6 @@ function bigPictureOpen () {
   document.addEventListener('keydown', onPopupEscKeydown);
 }
 
-//Функция закрытия окна
 function bigPictureClose () {
   bigPictureElement.classList.add('hidden');
   body.classList.remove('modal-open');
@@ -36,7 +34,6 @@ function bigPictureClose () {
   document.removeEventListener('keydown', onPopupEscKeydown);
 }
 
-// Функция генерирует полноразмерное фото с информацией
 const createFullSizePicture = ({url, likes, comments, description}) => {
   bigPictureOpen();
 
@@ -47,7 +44,8 @@ const createFullSizePicture = ({url, likes, comments, description}) => {
   let commentsValue = 0;
 
   const showComment = () => {
-    comments.slice(0, commentsValue += maxCommentsValue).forEach(({avatar, name, message}) => {
+    commentsValue += MAX_COMMENTS_VALUE;
+    comments.slice(0, commentsValue).forEach(({avatar, name, message}) => {
       const socialCommentElementTemplate = socialCommentElement.cloneNode(true);
       const socialCommentImage = socialCommentElementTemplate.querySelector('.social__picture');
       const socialCommentText = socialCommentElementTemplate.querySelector('.social__text');
@@ -72,7 +70,7 @@ const createFullSizePicture = ({url, likes, comments, description}) => {
   };
 
   showComment();
-  
+
   bigPictureCloseElement.addEventListener('click', bigPictureClose);
   socialCommentsLoaderElement.addEventListener('click', () => showComment());
 };
