@@ -48,8 +48,6 @@ function overlayClose () {
   resetEffect();
 }
 
-resetScale();
-
 uploadInput.addEventListener('change', overlayOpen);
 uploadCancelButton.addEventListener('click', overlayClose);
 

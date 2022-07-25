@@ -1,6 +1,6 @@
 import {createFullSizePicture} from './full-size.js';
 
-const pictureBlock = document.querySelector('.pictures');
+const pictureElement = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const publicationsFragment = document.createDocumentFragment();
 const imageFilterContainer = document.querySelector('.img-filters');
@@ -16,8 +16,8 @@ const createPublicationsArray = (publicationElements) => {
       createFullSizePicture({url, likes, comments, description});
     });
   });
-  pictureBlock.querySelectorAll('.picture').forEach((element) => {element.remove();});
-  pictureBlock.appendChild(publicationsFragment);
+  pictureElement.querySelectorAll('.picture').forEach((element) => {element.remove();});
+  pictureElement.appendChild(publicationsFragment);
   imageFilterContainer.classList.remove('img-filters--inactive');
 };
 
