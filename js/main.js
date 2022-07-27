@@ -1,26 +1,14 @@
-import './util.js';
-import './data.js';
-import './rendering.js';
-import './full-size.js';
-import './form.js';
-import './image-editing.js';
-import './upload-messages.js';
-import './filters.js';
-import './image-upload.js';
-import {createPublicationsArray} from './rendering.js';
-import {setUserFormSubmit} from './form.js';
-import {overlayClose} from './form.js';
-import {getData} from './api.js';
-import {setFilters} from './filters.js';
-import {debounce} from './util.js';
+import {generatePhotos} from './gallery.js';
+import {setUserFormSubmit} from './validate-form.js';
+import {uploadPhotosModal} from './edit-form.js';
+import {getDataServer} from './api.js';
+import {initFilter} from'./filter-img.js';
 
-const RERENDER_DELAY = 500;
+setUserFormSubmit();
 
-getData(createPublicationsArray);
+uploadPhotosModal();
 
-getData((publicationElements) => {
-  createPublicationsArray(publicationElements);
-  setFilters(publicationElements, debounce(createPublicationsArray, RERENDER_DELAY));
+getDataServer((photos) => {
+  generatePhotos(photos);
+  initFilter(photos);
 });
-
-setUserFormSubmit(overlayClose);

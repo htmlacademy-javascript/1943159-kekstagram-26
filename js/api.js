@@ -1,31 +1,35 @@
-import {showAlert} from './util.js';
+import {onErrorForm} from './success-error-mesages.js';
+import {showMessageError} from './util.js';
 
-const getData = (onSuccess) => {
-  fetch('https://26.javascript.pages.academy/kekstagram/data')
-    .then((response) => response.json())
-    .then((photo) => onSuccess(photo))
-    .catch(() => {
-      showAlert('Не удалось получить изображения. Обновите страницу');
-    });
+const GET_URL =  'https://26.javascript.pages.academy/kekstagram/data';
+const POST_URL = 'https://26.javascript.pages.academy/kekstagram';
+
+const getDataServer = (data) => {
+  fetch(GET_URL)
+    .then((response) =>
+      response.json())
+
+    .then((photos) => data(photos))
+    .catch(() => showMessageError('Загрузка не удалась, обновите страницу!'));
 };
 
-const sendData = (onSuccess, onFail, body) => {
-  fetch(
-    'https://26.javascript.pages.academy/kekstagram',
-    {
-      method: 'POST',
-      body,
-    },
-  ).then((response) => {
-    if (response.ok) {
-      onSuccess();
-    } else {
-      onFail('Не удалось отправить форму. Попробуйте ещё раз');
-    }
-  })
-    .catch(() => {
-      onFail('Не удалось отправить форму. Попробуйте ещё раз');
-    });
+const sendDataServer = (body, success, unblock, error) => {
+  fetch(POST_URL, {
+    method: 'POST',
+    body,
+  },)
+
+    .then((response) => {
+      if (response.ok) {
+        success();
+        unblock();
+
+      } else {
+        onErrorForm(error, unblock);
+      }
+
+    })
+    .catch(() => onErrorForm(error, unblock));
 };
 
-export {getData, sendData};
+export {getDataServer, sendDataServer};
