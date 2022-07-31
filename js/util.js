@@ -1,4 +1,6 @@
+//(https://learn.javascript.ru/task/random-int-min-max);
 const getRandomInteger = (min, max) => {
+  // случайное число от min до (max+1)
   const random = min + Math.random() * (max + 1 - min);
   if (min >= 0 && max > min) {
     return Math.floor(random);
@@ -20,7 +22,9 @@ const getRandomArrayUniqueNumbers = (length) => {
   return numbers;
 };
 
+//проверка максимальной длины строки
 const checkStringLength = (string, lengthNumber = 140) => {
+  //проверка параметра "string" на 'строку' и её длинну(length).
   if (typeof string !== 'string' || typeof lengthNumber !== 'number') {
     throw new Error('Строка не подходит по типу данных');
   }
@@ -28,7 +32,8 @@ const checkStringLength = (string, lengthNumber = 140) => {
 };
 checkStringLength('check string');
 
-const onClickEscapeKey = (evt) => evt.key === 'Escape';
+//Нажатие на кнопку "Escape".
+const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const stopListener = (inputArea, commentArea) => {
   inputArea.addEventListener('keydown', (evt) => {
@@ -39,15 +44,27 @@ const stopListener = (inputArea, commentArea) => {
   });
 };
 
+//Устранение дребезга
+// Источник - https://www.freecodecamp.org/news/javascript-debounce-example
 const debounce = (callback, timeoutDelay = 500) => {
+// Используем замыкания, чтобы id таймаута у нас навсегда приклеился
+  // к возвращаемой функции с setTimeout, тогда мы его сможем перезаписывать
   let timeoutId;
 
   return (...rest) => {
+    // Перед каждым новым вызовом удаляем предыдущий таймаут,
+    // чтобы они не накапливались
     clearTimeout(timeoutId);
+
+    // Затем устанавливаем новый таймаут с вызовом колбэка на ту же задержку
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+
+    // Таким образом цикл «поставить таймаут - удалить таймаут» будет выполняться,
+    // пока действие совершается чаще, чем переданная задержка timeoutDelay
   };
 };
 
+//Создаёт блок который выводит ошибку(error)
 const showMessageError = (message) => {
   const messageBlock = document.createElement('div');
   messageBlock.style.zIndex = '100';
@@ -69,9 +86,19 @@ const showMessageError = (message) => {
   messageBlock.textContent = message;
   document.body.append(messageBlock);
 
+  const DELAY = 5000;
+
   setTimeout(() => {
     messageBlock.remove();
-  }, 5000);
+  }, DELAY);
 };
 
-export {getRandomArrayUniqueNumbers,  getRandomInteger,  onClickEscapeKey,  checkStringLength,  stopListener,  showMessageError,  debounce};
+export {
+  getRandomArrayUniqueNumbers,
+  getRandomInteger,
+  isEscapeKey,
+  checkStringLength,
+  stopListener,
+  showMessageError,
+  debounce
+};

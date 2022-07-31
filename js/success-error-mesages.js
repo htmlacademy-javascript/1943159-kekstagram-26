@@ -1,57 +1,65 @@
-import {onClickEscapeKey} from './util.js';
-import {onFormClickEsc} from './edit-form.js';
+import { isEscapeKey } from './util.js';
+import { onFormClickEsc } from './edit-form.js';
 
 const bodyElement = document.querySelector('body');
-const templateSuccess = document.querySelector('#success').content;
-const templateError = document.querySelector('#error').content;
+const successBlockElement = document.querySelector('#success').content;
+const errorBlockElement = document.querySelector('#error').content;
 
+//Закрите по кнопке 'Esc'.
 const onErrorClickEsc = (evt) => {
-  if(onClickEscapeKey(evt)) {
+  if(isEscapeKey(evt)) {
     evt.preventDefault();
-    closeWarningWindow();
+    onWindowWarningClose();
   }
 };
 
-function closeWarningWindow () {
-  const successSection = document.querySelector('.success');
-  const errorSection = document.querySelector('.error');
+//Закрытие окна с успешной или ошибочной отправкой.
+function onWindowWarningClose () {
+  const successSectionElement = document.querySelector('.success');
+  const errorSectionElement = document.querySelector('.error');
 
-  if (successSection) {
-    successSection.remove();
+  if (successSectionElement) {
+    successSectionElement.remove();
   }
 
-  if (errorSection) {
-    errorSection.remove();
+  if (errorSectionElement) {
+    errorSectionElement.remove();
   }
   document.addEventListener('keydown', onFormClickEsc);
 }
 
 const onAreaWindowClose = (evt) => {
   if (evt.target.closest('section')) {
-    closeWarningWindow();
+    onWindowWarningClose();
   }
 };
 
+
+//Показывает окно успешной отправки.
 const onSuccessForm = () => {
-  const cloneSuccess = templateSuccess.cloneNode(true);
-  const successButton = cloneSuccess.querySelector('.success__button');
-  bodyElement.append(cloneSuccess);
+  const cloneSuccessElement = successBlockElement.cloneNode(true);
+  const successButtonElement = cloneSuccessElement.querySelector('.success__button');
+  bodyElement.append(cloneSuccessElement);
 
   document.addEventListener('click', onAreaWindowClose);
   document.addEventListener('keydown', onErrorClickEsc);
-  successButton.addEventListener('click', closeWarningWindow);
+  successButtonElement.addEventListener('click', onWindowWarningClose);
 };
 
+//Показывает окно ошибочной отправки.
 const onErrorForm = (unblock) => {
-  const cloneError = templateError.cloneNode(true);
-  const errorButton = cloneError.querySelector('.error__button');
-  bodyElement.append(cloneError);
+  const cloneErrorElement = errorBlockElement.cloneNode(true);
+  const errorButtonElement = cloneErrorElement.querySelector('.error__button');
+  bodyElement.append(cloneErrorElement);
   unblock();
 
   document.addEventListener('click', onAreaWindowClose);
   document.addEventListener('keydown', onErrorClickEsc);
-  errorButton.addEventListener('click', closeWarningWindow);
+  errorButtonElement.addEventListener('click', onWindowWarningClose);
   document.removeEventListener('keydown', onFormClickEsc);
 };
 
-export {onSuccessForm, onErrorForm};
+export {
+  onSuccessForm,
+  onErrorForm,
+};

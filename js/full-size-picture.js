@@ -1,4 +1,5 @@
-import {onClickEscapeKey} from './util.js';
+
+import { isEscapeKey } from './util.js';
 
 const MAX_COMMENTS = 5;
 
@@ -10,21 +11,23 @@ const buttonLoadElement = document.querySelector('.comments-loader');
 
 let onCommentsClick = null;
 
-const closeBigPhoto = () => {
+//Прячет модальное окно и убирает фиксацию с body, так же удаляет слушатели.
+const onBigPhotoClose = () => {
   bigPictureElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onBigPhotoClickEsc);
-  closeButtonElement.removeEventListener('click', closeBigPhoto);
+  closeButtonElement.removeEventListener('click', onBigPhotoClose);
   buttonLoadElement.removeEventListener('click', onCommentsClick);
 };
 
 function onBigPhotoClickEsc (evt) {
-  if(onClickEscapeKey(evt)) {
+  if(isEscapeKey(evt)) {
     evt.preventDefault();
-    closeBigPhoto();
+    onBigPhotoClose();
   }
 }
 
+//Создаёт элемент и передаёт параметр массива.
 const createElement = (commentsData) => {
   const element = document.createElement('li');
   const img = document.createElement('img');
@@ -44,6 +47,7 @@ const createElement = (commentsData) => {
   return element;
 };
 
+//Генерирует комментарии и подставляет к каждому элементу.
 const renderComments = (comments) => {
   comments.forEach ((comment) => {
     const createComment = createElement(comment);
@@ -53,6 +57,7 @@ const renderComments = (comments) => {
   });
 };
 
+//Добавляет новые комментарии
 const addComments = (copyComments) => {
   if (copyComments.length <= MAX_COMMENTS) {
     buttonLoadElement.classList.add('hidden');
@@ -60,6 +65,7 @@ const addComments = (copyComments) => {
   renderComments(copyComments.splice(0,MAX_COMMENTS));
 };
 
+//Генерирует новую копию и разбивает на 5.
 const getNewRenderComments = (comments) => {
   const copyComments = comments.slice();
   commentsListElement.innerHTML = '';
@@ -82,6 +88,7 @@ const getNewRenderComments = (comments) => {
   }
 };
 
+//Показывает большое фото с переданным аргументом массива.
 const showBigPicture = (data) => {
   const {url, likes, comments, description} = data;
   document.body.classList.add('modal-open');
@@ -94,9 +101,11 @@ const showBigPicture = (data) => {
   bigPictureElement.focus();
 
   document.addEventListener('keydown', onBigPhotoClickEsc);
-  closeButtonElement.addEventListener('click', closeBigPhoto);
+  closeButtonElement.addEventListener('click', onBigPhotoClose);
 
   getNewRenderComments(comments);
 };
 
-export {showBigPicture};
+export {
+  showBigPicture,
+};

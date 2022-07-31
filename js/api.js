@@ -1,9 +1,12 @@
-import {onErrorForm} from './success-error-mesages.js';
-import {showMessageError} from './util.js';
+import { onErrorForm } from './success-error-mesages.js';
+import { showMessageError } from './util.js';
 
+//Адрес получения наших объектов.
 const GET_URL =  'https://26.javascript.pages.academy/kekstagram/data';
 const POST_URL = 'https://26.javascript.pages.academy/kekstagram';
 
+
+//Получаем объекты с сервера по адресу:
 const getDataServer = (data) => {
   fetch(GET_URL)
     .then((response) =>
@@ -13,7 +16,7 @@ const getDataServer = (data) => {
     .catch(() => showMessageError('Загрузка не удалась, обновите страницу!'));
 };
 
-const sendDataServer = (body, success, unblock, error) => {
+const sendDataServer = (body, success, unblock) => {
   fetch(POST_URL, {
     method: 'POST',
     body,
@@ -25,11 +28,13 @@ const sendDataServer = (body, success, unblock, error) => {
         unblock();
 
       } else {
-        onErrorForm(error, unblock);
+        onErrorForm(unblock);
       }
 
     })
-    .catch(() => onErrorForm(error, unblock));
+    .catch(() => onErrorForm(unblock));
 };
 
 export {getDataServer, sendDataServer};
+
+
