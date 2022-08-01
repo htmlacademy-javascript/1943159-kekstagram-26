@@ -1,6 +1,5 @@
 import { isEscapeKey } from './util.js';
 
-
 const mainElement = document.querySelector('main');
 const errorTemplateElement = document.querySelector('#error').content;
 const errorFragmentElement = document.createDocumentFragment();

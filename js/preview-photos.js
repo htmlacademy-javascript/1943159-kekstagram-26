@@ -1,4 +1,3 @@
-
 import { showPicture } from './display-photo.js';
 
 const pictureTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
