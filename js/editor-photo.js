@@ -36,8 +36,10 @@ const onPhotoEditorClose = () => {
   resetSettings();
   document.removeEventListener('keydown',onPhotoEditorCloseEsc);
   uploadModalCloseElement.removeEventListener('click', onPhotoEditorClose);
-
+  uploadPhotoElement.reset();
+  pristine.reset();
 };
+
 // Открытие окна редактирования загруженного фото
 uploadPhotoElement.addEventListener('change', () => {
   resetSettings();
@@ -55,16 +57,20 @@ const ScalePhoto = {
   MIN: 25,
   STEP: 25,
 };
+
+const transformScale = (scope) => {
+  scaleValueElement.value = `${scope}%`;
+  scope = scope / 100;
+  imagePreviewElement.style.transform = `scale(${scope})`;
+};
+
 buttonPlusElement.addEventListener('click', () => {
   let scale = parseInt(scaleValueElement.value, 10) + ScalePhoto.STEP;
 
   if (scale >= ScalePhoto.MAX) {
     scale = ScalePhoto.MAX;
   }
-
-  scaleValueElement.value = `${scale}%`;
-  scale = scale / 100;
-  imagePreviewElement.style.transform = `scale(${scale})`;
+  transformScale(scale);
 });
 
 buttonMinusElement.addEventListener('click', () => {
@@ -73,10 +79,7 @@ buttonMinusElement.addEventListener('click', () => {
   if (scale <= ScalePhoto.MIN) {
     scale = ScalePhoto.MIN;
   }
-
-  scaleValueElement.value = `${scale}%`;
-  scale = scale / 100;
-  imagePreviewElement.style.transform = `scale(${scale})`;
+  transformScale(scale);
 });
 
 const onSuccess = () => {

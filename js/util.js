@@ -11,7 +11,8 @@ const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements
 const getMaxStringLength = (string, length)=> string.length <= length;
 
 // определениее клавиши ESC
-const isEscapeKey = (evt) => evt.key === 'Escape';
+const ESCAPE_KEY =  'Escape';
+const isEscapeKey = (evt) => evt.key === ESCAPE_KEY;
 
 
 const isArrayUnique = (elements) => {

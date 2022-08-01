@@ -53,7 +53,6 @@ pristine.addValidator(textDescriptionElement, isValidateComment,errorMessage.COM
 
 // Отправка загруженного фото
 
-
 const onEscapeDown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
